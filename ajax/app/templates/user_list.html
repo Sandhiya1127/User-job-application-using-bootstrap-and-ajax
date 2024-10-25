@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>User List</title>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>User List</h2>
+    <div class="form-inline mb-3">
+        <input type="number" id="filterExperience" class="form-control mr-2" placeholder="Min Experience">
+        <input type="text" id="filterJobRole" class="form-control mr-2" placeholder="Job Role">
+        <button id="filterButton" class="btn btn-primary">Filter</button>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Experience</th>
+                <th>Job Role</th>
+                <th>Resume</th>
+            </tr>
+        </thead>
+        <tbody id="userTableBody">
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    function fetchUsers() {
+        $.ajax({
+            url: '/user-list/',
+            type: 'GET',
+            data: {
+                experience: $('#filterExperience').val(),
+                jobRole: $('#filterJobRole').val()
+            },
+            success: function (data) {
+                const userTableBody = $('#userTableBody');
+                userTableBody.empty(); 
+                if (data.length === 0) {
+                    userTableBody.append('<tr><td colspan="5">No users found.</td></tr>');
+                } else {
+                    data.forEach(user => {
+                        userTableBody.append(`
+                            <tr>
+                                <td>${user.name}</td>
+                                <td>${user.email}</td>
+                                <td>${user.experience}</td>
+                                <td>${user.job_role}</td>
+                                <td><a href="${user.resume}" target="_blank">Download</a></td>
+                            </tr>
+                        `);
+                    });
+                }
+            },
+            error: function (xhr) {
+                console.error("Error fetching users:", xhr);
+                alert('Error fetching user list. Please try again later.');
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        $('#filterButton').on('click', function () {
+            fetchUsers();
+        });
+    });
+</script>
+</body>
+</html>

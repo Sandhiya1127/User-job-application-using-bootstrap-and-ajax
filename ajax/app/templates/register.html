@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <title>Register</title>
+    <style>
+        body {
+            background-color: #f8f9fa; 
+        }
+        .register-container {
+            max-width: 450px;
+            margin: auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+        .alert {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .footer-link {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="register-container">
+        <h2>Register</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-info">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+        <p class="footer-link">
+            <a href="{% url 'login' %}">Already have an account? Login here</a>
+        </p>
+    </div>
+</div>
+</body>
+</html>
